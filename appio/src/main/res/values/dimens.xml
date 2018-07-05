@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_extra_small_size">12sp</dimen>
+    <dimen name="text_small_size">16sp</dimen>
+    <dimen name="text_normal_size">20sp</dimen>
+    <dimen name="text_big_size">24sp</dimen>
+    <dimen name="text_extra_big_size">28sp</dimen>
+    <dimen name="component_margin_horizontal">16dp</dimen>
+    <dimen name="component_margin_vertical">8dp</dimen>
+    <dimen name="line_width">2dp</dimen>
+    <dimen name="button_padding_vertical">24dp</dimen>
+</resources>

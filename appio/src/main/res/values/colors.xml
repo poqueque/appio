@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/blue</color>
+    <color name="colorPrimaryDark">@color/dark_blue</color>
+    <color name="colorAccent">@color/pink</color>
+    <color name="colorBackground">@color/white</color>
+
+    <!-- https://coolors.co/ffe74c-3a2e39-ff5964-6bf178-35a7ff -->
+    <color name="white">#F6F7EB</color>
+    <color name="black">#071013</color>
+
+    <color name="yellow">#FFE74C</color>
+    <color name="red">#FF5964</color>
+    <color name="green">#6BF178</color>
+    <color name="blue">#35A7FF</color>
+
+    <color name="grey">#848C8E</color>
+    <color name="dark_grey">#3A2E39</color>
+
+    <color name="brown">#DF9A57</color>
+    <color name="purple">#88498F</color>
+    <color name="cyan">#73FBD3</color>
+    <color name="pink">#DFBBB1</color>
+    <color name="dark_blue">#044389</color>
+    <color name="dark_red">#A62639</color>
+    <color name="dark_green">#459E4E</color>
+
+    <color name="translucid">#88FFFFFF</color>
+
+    <color name="line_color">@color/black</color>
+    <color name="tab_background_color">@color/colorPrimary</color>
+</resources>

@@ -1,0 +1,14 @@
+<resources>
+    <string name="lib_name">Appio</string>
+    <string name="loading">Loading...</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in_short">Iniciar sesión</string>
+    <string name="action_sign_in">Iniciar sesión / Registro</string>
+    <string name="login_rationale">Para crear un nuevo usuario, introduce tu e-mail y la contraseña que utilizarás en Repes.</string>
+    <string name="error_empty_password">Por favor, introduce la contraseña</string>
+    <string name="error_invalid_password">La contraseña es demasiado corta</string>
+    <string name="error_field_required">Es necesario rellenar este campo</string>
+    <string name="error_invalid_email">El email es incorrecto</string>
+    <string name="authentication_error">Error de autenticación</string>
+</resources>
