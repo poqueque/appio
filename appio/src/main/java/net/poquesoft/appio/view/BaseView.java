@@ -10,4 +10,7 @@ public interface BaseView<T> {
 
     void onReceiveData(String key, String data);
 
+    void showProgress();
+
+    void hideProgress();
 }

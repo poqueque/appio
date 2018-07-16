@@ -52,7 +52,7 @@ public class AppioData {
      *
      * @param d Listener to register
      */
-    public static void registerListener (DataListener d){
+    public void registerListener (DataListener d){
         listeners.add(d);
     }
 
@@ -62,7 +62,7 @@ public class AppioData {
      * @param d Listener to unregister
      */
 
-    public static void unregisterListener (DataListener d){
+    public void unregisterListener (DataListener d){
         listeners.remove(d);
     }
 
@@ -128,7 +128,7 @@ public class AppioData {
         DatabaseReference userRef = mDatabase.child("users").child(userKey);
         userRef.child("uid").setValue(u.uid);
         userRef.child("email").setValue(u.email);
-        userRef.child   ("name").setValue(u.name);
+        userRef.child("name").setValue(u.name);
         userRef.child("gender").setValue(u.gender);
         userRef.child("address").setValue(u.address);
 

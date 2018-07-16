@@ -28,6 +28,8 @@ public class Authentication {
     private static FirebaseAuth.AuthStateListener mAuthListener;
     private static FirebaseUser mUser;
     private static final String ERROR_EMAIL_ALREADY_IN_USE = "ERROR_EMAIL_ALREADY_IN_USE";
+    public static final String ERROR_WEAK_PASSWORD = "ERROR_WEAK_PASSWORD";
+    public static final String ERROR_INVALID_EMAIL = "ERROR_INVALID_EMAIL";
     public static final String ERROR_USER_NOT_FOUND = "ERROR_USER_NOT_FOUND";
     private static User userProfile;
 
@@ -95,6 +97,8 @@ public class Authentication {
      * @param email Email of the new user
      * @param password Password of the new user
      */
+    //TODO: Email Validation
+    //TODO: Forgot Password
     public static void createUser (final SuccessErrorListener successErrorListener, final String email, final String password){
         Log.d(TAG, "[PROFILE] Check Account creation");
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -114,9 +118,13 @@ public class Authentication {
                             Log.d(TAG, "[PROFILE] Authentication failed.");
                             if (task.getException() instanceof FirebaseAuthException){
                                 FirebaseAuthException fae = (FirebaseAuthException) task.getException();
-                                if (ERROR_EMAIL_ALREADY_IN_USE.equals(fae.getErrorCode())){
+                                if (ERROR_EMAIL_ALREADY_IN_USE.equals(fae.getErrorCode())) {
                                     Log.d(TAG, "[PROFILE] Trying login.");
-                                    login(successErrorListener, email,password);
+                                    login(successErrorListener, email, password);
+                                } else if (ERROR_WEAK_PASSWORD.equals(fae.getErrorCode())){
+                                    successErrorListener.onError(ERROR_WEAK_PASSWORD);
+                                } else if (ERROR_INVALID_EMAIL.equals(fae.getErrorCode())){
+                                    successErrorListener.onError(ERROR_INVALID_EMAIL);
                                 } else {
                                     Log.d(TAG, "[PROFILE] Error authenticating:"+fae.getMessage());
                                     successErrorListener.onError("Error de autenticación:" + fae.getErrorCode());

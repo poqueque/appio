@@ -38,7 +38,7 @@ public class TabAppioActivity extends AppioActivity {
     private ViewPager viewPager;
 
     private VpAdapter adapter;
-    private List<Fragment> fragments;// used for ViewPager adapter
+    private List<BaseFragment> fragments;// used for ViewPager adapter
 
     private int mSelectedItem;
 /*
@@ -123,7 +123,23 @@ public class TabAppioActivity extends AppioActivity {
         tabFrameList.add(tabFrame);
     }
 
-    private synchronized void addFragment(TabFrame tabFrame){
+    protected void clearTab(int tabId){
+        for (BaseFragment baseFragment: fragments){
+            if (baseFragment.getTabFrame().getId() == tabId){
+                baseFragment.clearFrame();
+            }
+        }
+    }
+
+    protected void addToTab(int tabId, Component component){
+        for (BaseFragment baseFragment: fragments){
+            if (baseFragment.getTabFrame().getId() == tabId){
+                baseFragment.addComponent(component);
+            }
+        }
+    }
+
+    private synchronized BaseFragment addFragment(TabFrame tabFrame){
         // create music fragment and add it
         BaseFragment fragment = new BaseFragment();
         Bundle bundle = new Bundle();
@@ -134,6 +150,7 @@ public class TabAppioActivity extends AppioActivity {
 
         navigation.getMenu().add(Menu.NONE, tabFrame.getId(), Menu.NONE, tabFrame.getTitle()).setIcon(tabFrame.getIconResource());
 //        if (navigation.getMenu().size() == 1) selectTab(menuItem);
+        return fragment;
     }
 
 
@@ -246,9 +263,9 @@ public class TabAppioActivity extends AppioActivity {
      * view pager adapter
      */
     private static class VpAdapter extends FragmentPagerAdapter {
-        private List<Fragment> data;
+        private List<BaseFragment> data;
 
-        public VpAdapter(FragmentManager fm, List<Fragment> data) {
+        public VpAdapter(FragmentManager fm, List<BaseFragment> data) {
             super(fm);
             this.data = data;
         }

@@ -3,6 +3,8 @@ package net.poquesoft.appio.view.component;
 import android.view.View;
 import android.widget.Button;
 
+import com.thekhaeng.pushdownanim.PushDownAnim;
+
 import net.poquesoft.appio.R;
 import net.poquesoft.appio.view.listeners.ActionListener;
 
@@ -30,12 +32,22 @@ public class ButtonComponent extends Component {
     public void initView(final View v) {
         button = v.findViewById(R.id.button);
         button.setText(text);
+        PushDownAnim.setPushDownAnimTo(button)
+            .setOnClickListener( new View.OnClickListener(){
+            @Override
+            public void onClick( View view ){
+                if (actionListener!= null) actionListener.onAction(clickAction);
+            }
+
+        } );
+/*
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (actionListener!= null) actionListener.onAction(clickAction);
             }
         });
+*/
     }
 
     public ButtonComponent setActionListener(ActionListener actionListener) {

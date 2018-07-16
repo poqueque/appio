@@ -44,6 +44,7 @@ public class BaseFragment extends Fragment {
     protected synchronized void paintFrame() {
 
         mContainer.removeAllViews();
+        /*
         ViewGroup frameContainer = (ViewGroup) getLayoutInflater().inflate(R.layout.frame_container, null);
         //Build components
         for (Component c: tabFrame.componentList){
@@ -51,5 +52,24 @@ public class BaseFragment extends Fragment {
             frameContainer.addView(child);
         }
         mContainer.addView(frameContainer);
+        */
+        for (Component c: tabFrame.componentList){
+            View child = c.getView(this.getContext(), mContainer);
+            mContainer.addView(child);
+        }
+
+    }
+
+    protected synchronized void addComponent(Component component) {
+        View child = component.getView(this.getContext(), mContainer);
+        mContainer.addView(child);
+    }
+
+    protected synchronized void clearFrame() {
+        mContainer.removeAllViews();
+    }
+
+    public TabFrame getTabFrame() {
+        return tabFrame;
     }
 }

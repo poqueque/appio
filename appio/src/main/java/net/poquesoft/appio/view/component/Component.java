@@ -15,6 +15,7 @@ public abstract class Component {
     public static final int HEADER = 1;
     public static final int ITEM = 2;
     public String tag = null;
+    public View view;
     int type = ITEM;
 
     public abstract int getLayout();
@@ -31,9 +32,9 @@ public abstract class Component {
 
     public View getView(Context context , ViewGroup parent){
         LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-        View v = inflater.inflate(getLayout(), parent, false);
-        initView(v);
-        return v;
+        view = inflater.inflate(getLayout(), parent, false);
+        initView(view);
+        return view;
     };
 
     public int getType() {
@@ -41,5 +42,9 @@ public abstract class Component {
     }
     public void setType(int type) {
         this.type = type;
+    }
+
+    public void update() {
+        if (view != null) initView(view);
     }
 }

@@ -1,5 +1,6 @@
 package net.poquesoft.appio.view;
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -9,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.materialdrawer.Drawer;
@@ -24,6 +24,7 @@ import net.poquesoft.appio.presenter.AppioPresenter;
 import net.poquesoft.appio.view.dialogs.AppioDialogs;
 import net.poquesoft.appio.view.drawer.DrawerConfig;
 import net.poquesoft.appio.view.drawer.DrawerItem;
+import net.poquesoft.appio.view.listeners.SimpleListener;
 
 public class AppioActivity extends AppCompatActivity implements BaseView<AppioPresenter>, Drawer.OnDrawerListener {
 
@@ -32,7 +33,7 @@ public class AppioActivity extends AppCompatActivity implements BaseView<AppioPr
     Drawer drawer;
 
     Toolbar toolbar;
-    private MaterialDialog progressDialog;
+    private Dialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +134,7 @@ public class AppioActivity extends AppCompatActivity implements BaseView<AppioPr
     /**
      * Shows the progress UI and hides the login form.
      */
-    public void showProgress(final boolean show) {
+    public void showProgress() {
         progressDialog = AppioDialogs.showProgress(this, getString(R.string.loading));
     }
 
@@ -159,5 +160,17 @@ public class AppioActivity extends AppCompatActivity implements BaseView<AppioPr
     @Override
     public void onDrawerSlide(View drawerView, float slideOffset) {
 
+    }
+
+    public void showError(String message){
+        AppioDialogs.errorMessage(this, message);
+    }
+
+    public void showSuccess(String message){
+        AppioDialogs.successMessage(this, message, null);
+    }
+
+    public void showSuccess(String message, SimpleListener listener){
+        AppioDialogs.successMessage(this, message, listener);
     }
 }

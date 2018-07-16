@@ -59,6 +59,7 @@ public class RecyclerViewComponent extends Component {
         adapter.notifyDataSetChanged();
     };
 
+    @Override
     public void update(){
         Log.d(TAG,"[ALBUM] updateItem");
         adapter.notifyDataSetChanged();

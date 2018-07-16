@@ -61,11 +61,34 @@ dependencies {
     //MaterialDialogs
     implementation 'com.afollestad.material-dialogs:core:0.9.4.2'
 
+    //Push Down Animation Click
+    implementation( 'com.github.thekhaeng:pushdown-anim-click:1.1.1' ){
+        exclude group: 'com.android.support'
+    }
+
+    //Sweet Alert Dialog
+    //https://jitpack.io/p/thomper/sweet-alert-dialog/v1.4.0
+    implementation 'com.github.thomper:sweet-alert-dialog:v1.4.0'
+
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    //OkHttp
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+
+    //Apache Commons
+    implementation 'org.apache.commons:commons-lang3:3.7'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+
+    implementation 'com.google.android.gms:play-services-analytics:16.0.1'
+
     //Test Libraries
     testImplementation 'junit:junit:4.12'
+    testImplementation 'com.android.support.test:runner:1.0.2'
+    testImplementation 'org.powermock:powermock-api-mockito:1.6.2'
+    testImplementation 'org.powermock:powermock-module-junit4-rule-agent:1.6.2'
+    testImplementation 'org.powermock:powermock-module-junit4-rule:1.6.2'
+    testImplementation 'org.powermock:powermock-module-junit4:1.6.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
