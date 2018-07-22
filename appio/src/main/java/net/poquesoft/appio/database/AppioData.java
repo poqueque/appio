@@ -1,18 +1,20 @@
 package net.poquesoft.appio.database;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import net.poquesoft.appio.authentication.Authentication;
 import net.poquesoft.appio.authentication.User;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 
 public class AppioData {
@@ -72,7 +74,6 @@ public class AppioData {
      *
      */
     protected static void notifyListeners() {
-        Collections.sort(users);
         Log.d(TAG,"[DB] notifyListeners");
         for (DataListener d:listeners) d.onDataChange();
     }
@@ -145,5 +146,45 @@ public class AppioData {
         User u = Authentication.getUserProfile();
         String userKey = u.uid;
         return mDatabase.child("users").child(userKey);
+    }
+
+
+    public long getServerTime(final Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences(
+                "appio", Context.MODE_PRIVATE);
+        long serverDelay = sharedPref.getLong("serverDelay", 0);
+        Log.d(TAG,"[DELAY] readServerDelay:"+serverDelay);
+        long serverTimestamp = System.currentTimeMillis()-serverDelay;
+        Log.d(TAG,"[DELAY] Server Timestamp:"+serverTimestamp);
+        return serverTimestamp;
+    }
+
+    public void synchronizeServerTimeDelay(final Context context) {
+
+        getUserRef().child("lastConnected").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        Long timestampServer = (Long) snapshot.getValue();
+                        Long delay = System.currentTimeMillis()-timestampServer;
+                        SharedPreferences sharedPref = context.getSharedPreferences(
+                                "appio", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putLong("serverDelay", delay);
+                        editor.commit();
+                        Log.d(TAG,"[DELAY] saveServerDelay:"+delay);
+                        notifyListeners();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.d(TAG,"[DELAY] databaseError: "+databaseError);
+                        notifyListeners();
+                    }
+                }
+        );
+
+        getUserRef().child("lastConnected").setValue(ServerValue.TIMESTAMP);
+
     }
 }

@@ -27,7 +27,7 @@
         android:layout_weight="2"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_small_size"
-        android:fontFamily="@font/raleway_extra_light"
+        android:fontFamily="@font/raleway_light"
         android:textColor="@color/black"/>
 
 </LinearLayout>

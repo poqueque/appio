@@ -56,7 +56,8 @@ public class RecyclerViewComponent extends Component {
     public void addItem(Component item){
         Log.d(TAG,"[ALBUM] addItem");
         items.add(item);
-        adapter.notifyDataSetChanged();
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
     };
 
     @Override

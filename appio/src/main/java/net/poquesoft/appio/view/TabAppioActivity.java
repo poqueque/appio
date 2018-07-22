@@ -18,6 +18,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import net.poquesoft.appio.R;
 import net.poquesoft.appio.view.component.Component;
+import net.poquesoft.appio.view.listeners.SimpleListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -130,6 +131,39 @@ public class TabAppioActivity extends AppioActivity {
             }
         }
     }
+
+    protected void setSwipeTab(int tabId){
+        for (BaseFragment baseFragment: fragments){
+            if (baseFragment.getTabFrame().getId() == tabId){
+                baseFragment.setEnabledSwipe(true);
+            }
+        }
+    }
+
+    protected void setSwipeListener(int tabId, SimpleListener swipeListener){
+        for (BaseFragment baseFragment: fragments){
+            if (baseFragment.getTabFrame().getId() == tabId){
+                baseFragment.setSwipeListener(swipeListener);
+            }
+        }
+    }
+
+    public void showProgress(int tabId) {
+        for (BaseFragment baseFragment: fragments){
+            if (baseFragment.getTabFrame().getId() == tabId){
+                baseFragment.showSwipe();
+            }
+        }
+    }
+
+    public void hideProgress(int tabId) {
+        for (BaseFragment baseFragment: fragments){
+            if (baseFragment.getTabFrame().getId() == tabId){
+                baseFragment.hideSwipe();
+            }
+        }
+    }
+
 
     protected void addToTab(int tabId, Component component){
         for (BaseFragment baseFragment: fragments){

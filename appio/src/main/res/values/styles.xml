@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:fontFamily">@font/raleway_extra_light</item>
+        <item name="android:fontFamily">@font/raleway_light</item>
         <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
         <item name="windowActionModeOverlay">true</item>
     </style>
@@ -26,5 +26,4 @@
         <item name="android:textSize">@dimen/text_big_size</item>
         <item name="android:textAllCaps">true</item>
     </style>
-
 </resources>

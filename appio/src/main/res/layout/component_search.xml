@@ -14,7 +14,7 @@
         android:id="@+id/search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fontFamily="@font/raleway_extra_light"
+        android:fontFamily="@font/raleway_light"
         android:background="@drawable/background_search"
         android:textColor="@color/black"
         android:textSize="@dimen/text_small_size"

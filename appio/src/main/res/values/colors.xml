@@ -22,8 +22,9 @@
     <color name="cyan">#73FBD3</color>
     <color name="pink">#DFBBB1</color>
     <color name="dark_blue">#044389</color>
-    <color name="dark_red">#A62639</color>
-    <color name="dark_green">#459E4E</color>
+    <color name="carmine">#A62639</color>
+    <color name="may_green">#459E4E</color>
+    <color name="orange">#FF8E51</color>
 
     <color name="translucid">#88FFFFFF</color>
 

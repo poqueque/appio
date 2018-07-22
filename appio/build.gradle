@@ -67,8 +67,9 @@ dependencies {
     }
 
     //Sweet Alert Dialog
-    //https://jitpack.io/p/thomper/sweet-alert-dialog/v1.4.0
-    implementation 'com.github.thomper:sweet-alert-dialog:v1.4.0'
+    //https://jitpack.io/p/poqueque/sweet-alert-dialog/v1.4.3
+    //TODO: Use final version
+    implementation 'com.github.poqueque:sweet-alert-dialog:develop-SNAPSHOT'
 
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
@@ -79,6 +80,9 @@ dependencies {
     //Apache Commons
     implementation 'org.apache.commons:commons-lang3:3.7'
     implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+
+    //Joda Time
+    implementation 'net.danlew:android.joda:2.9.9.3'
 
     implementation 'com.google.android.gms:play-services-analytics:16.0.1'
 

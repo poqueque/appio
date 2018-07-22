@@ -173,4 +173,8 @@ public class AppioActivity extends AppCompatActivity implements BaseView<AppioPr
     public void showSuccess(String message, SimpleListener listener){
         AppioDialogs.successMessage(this, message, listener);
     }
+
+    public void confirm(String message, SimpleListener listener){
+        AppioDialogs.confirm(this, message, listener);
+    }
 }

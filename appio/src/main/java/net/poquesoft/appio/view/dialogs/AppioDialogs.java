@@ -44,9 +44,34 @@ public class AppioDialogs {
                 .show();
 	}
 
+    /**
+     * Asks for confirmation and executes result if accepted
+     * @param context Context
+     * @param message Message to display
+     * @param listener
+     */
+    public static void confirm(final Context context, String message, final SimpleListener listener) {
+
+        new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(message)
+                .setConfirmText(context.getString(android.R.string.ok))
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        if (listener != null) listener.onAction();
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                })
+                .setCancelText(context.getString(android.R.string.cancel))
+                .showCancelButton(true)
+                .show();
+    }
+
 
     public static void errorMessage(final Context context, String message) {
-	    errorMessage(context, "Error", message);
+        new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+                .setTitleText(message)
+                .show();
     }
 
     public static void errorMessage(final Context context, String title, String message) {
