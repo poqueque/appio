@@ -39,22 +39,22 @@ public class AppioDialogs {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         if (listener != null) listener.onAction();
+                        sweetAlertDialog.dismissWithAnimation();
                     }
                 })
                 .show();
 	}
 
     /**
-     * Asks for confirmation and executes result if accepted
-     * @param context Context
+     * Shows a message in a popup dialog
+     *  @param context Context
      * @param message Message to display
      * @param listener
      */
-    public static void confirm(final Context context, String message, final SimpleListener listener) {
+    public static void normalMessage(final Context context, String message, final SimpleListener listener) {
 
-        new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+        new SweetAlertDialog(context, SweetAlertDialog.NORMAL_TYPE)
                 .setTitleText(message)
-                .setConfirmText(context.getString(android.R.string.ok))
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -62,7 +62,45 @@ public class AppioDialogs {
                         sweetAlertDialog.dismissWithAnimation();
                     }
                 })
+                .show();
+    }
+
+    /**
+     * Asks for confirmation and executes result if accepted
+     * @param context Context
+     * @param message Message to display
+     * @param listenerAccept
+     */
+    public static void confirm(final Context context, String message, final SimpleListener listenerAccept) {
+        confirm(context, message, listenerAccept, null);
+    }
+    /**
+     * Asks for confirmation and executes result if accepted
+     * @param context Context
+     * @param message Message to display
+     * @param listenerAccept
+     * @param listenerCancel
+     */
+    public static void confirm(final Context context, String message, final SimpleListener listenerAccept, final SimpleListener listenerCancel) {
+
+        new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(message)
+                .setConfirmText(context.getString(android.R.string.ok))
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        if (listenerAccept != null) listenerAccept.onAction();
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                })
                 .setCancelText(context.getString(android.R.string.cancel))
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        if (listenerCancel != null) listenerCancel.onAction();
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                })
                 .showCancelButton(true)
                 .show();
     }

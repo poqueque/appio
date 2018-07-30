@@ -6,7 +6,7 @@ import android.widget.Button;
 import com.thekhaeng.pushdownanim.PushDownAnim;
 
 import net.poquesoft.appio.R;
-import net.poquesoft.appio.view.listeners.ActionListener;
+import net.poquesoft.appio.view.listeners.IntegerListener;
 
 /**
  * Standard Button component
@@ -16,7 +16,7 @@ public class ButtonComponent extends Component {
 
     String text = "";
     int clickAction = Component.NONE;
-    ActionListener actionListener;
+    IntegerListener actionListener;
     Button button;
 
     public ButtonComponent(String s) {
@@ -50,7 +50,7 @@ public class ButtonComponent extends Component {
 */
     }
 
-    public ButtonComponent setActionListener(ActionListener actionListener) {
+    public ButtonComponent setActionListener(IntegerListener actionListener) {
         this.actionListener = actionListener;
         return this;
     }

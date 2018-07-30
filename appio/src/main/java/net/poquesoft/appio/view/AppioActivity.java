@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -166,6 +167,21 @@ public class AppioActivity extends AppCompatActivity implements BaseView<AppioPr
         AppioDialogs.errorMessage(this, message);
     }
 
+    public void showErrorFrame(String message){
+        TextView errorFrame = findViewById(R.id.error_frame);
+        if (errorFrame != null) {
+            errorFrame.setText(message);
+            errorFrame.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void hideErrorFrame(){
+        TextView errorFrame = findViewById(R.id.error_frame);
+        if (errorFrame != null) {
+            errorFrame.setVisibility(View.GONE);
+        }
+    }
+
     public void showSuccess(String message){
         AppioDialogs.successMessage(this, message, null);
     }
@@ -174,7 +190,19 @@ public class AppioActivity extends AppCompatActivity implements BaseView<AppioPr
         AppioDialogs.successMessage(this, message, listener);
     }
 
-    public void confirm(String message, SimpleListener listener){
-        AppioDialogs.confirm(this, message, listener);
+
+    public void showNormal(String message){
+        AppioDialogs.normalMessage(this, message, null);
+    }
+
+    public void showNormal(String message, SimpleListener listener){
+        AppioDialogs.normalMessage(this, message, listener);
+    }
+
+    public void confirm(String message, SimpleListener listenerAccept){
+        AppioDialogs.confirm(this, message, listenerAccept);
+    }
+    public void confirm(String message, SimpleListener listenerAccept, SimpleListener listenerCancel){
+        AppioDialogs.confirm(this, message, listenerAccept, listenerCancel);
     }
 }

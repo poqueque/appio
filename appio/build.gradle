@@ -37,13 +37,11 @@ dependencies {
     implementation "com.android.support:support-annotations:${supportLibVersion}"
     implementation "com.android.support:design:${supportLibVersion}"
     implementation "com.android.support:support-vector-drawable:${supportLibVersion}"
-//    implementation 'com.android.support:support-annotations:27.1.1'
-//    implementation 'com.android.support:appcompat-v7:27.1.1'
-//    implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 
     //Firebase
     implementation 'com.google.firebase:firebase-auth:16.0.2'
+    implementation 'com.google.android.gms:play-services-auth:15.0.1'
     implementation 'com.google.firebase:firebase-database:16.0.1'
     implementation 'com.google.firebase:firebase-core:16.0.1'
         //BottomNavigationEx

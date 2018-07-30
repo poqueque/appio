@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import net.poquesoft.appio.R;
-import net.poquesoft.appio.view.listeners.ActionListener;
+import net.poquesoft.appio.view.listeners.IntegerListener;
 
 /**
  * Standard Button component
@@ -15,7 +15,7 @@ public class SimpleItem3 extends Component {
     String text1 = "";
     String text2 = "";
     String text3 = "";
-    ActionListener actionListener;
+    IntegerListener actionListener;
     int clickAction = Component.NONE;
     View clickableView;
 
@@ -47,7 +47,7 @@ public class SimpleItem3 extends Component {
         textView3.setText(text3);
     }
 
-    public SimpleItem3 setActionListener(ActionListener actionListener) {
+    public SimpleItem3 setActionListener(IntegerListener actionListener) {
         this.actionListener = actionListener;
         return this;
     }

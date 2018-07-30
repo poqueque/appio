@@ -11,13 +11,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import net.poquesoft.appio.R;
 import net.poquesoft.appio.view.component.Component;
+import net.poquesoft.appio.view.listeners.IntegerListener;
 import net.poquesoft.appio.view.listeners.SimpleListener;
 
 import java.util.ArrayList;
@@ -38,22 +38,13 @@ public class TabAppioActivity extends AppioActivity {
     private BottomNavigationViewEx navigation;
     private ViewPager viewPager;
 
+
+    private IntegerListener onTabchangedListener;
+
     private VpAdapter adapter;
     private List<BaseFragment> fragments;// used for ViewPager adapter
 
     private int mSelectedItem;
-/*
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            selectTab(item);
-            return true;
-        }
-
-    };
-*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,20 +61,6 @@ public class TabAppioActivity extends AppioActivity {
         initView();
         initData();
         initEvent();
-        //Add MenuItem with icon to Menu
-/*
-        navigation.getMenu().clear();
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        MenuItem selectedItem;
-        if (savedInstanceState != null) {
-            mSelectedItem = savedInstanceState.getInt(SELECTED_ITEM, 0);
-            selectedItem = navigation.getMenu().findItem(mSelectedItem);
-            selectTab(selectedItem);
-        } else if (navigation.getMenu().size()>0){
-            selectedItem = navigation.getMenu().getItem(0);
-            selectTab(selectedItem);
-        }
-*/
     }
 
     @Override
@@ -95,8 +72,8 @@ public class TabAppioActivity extends AppioActivity {
      * change BottomNavigationViewEx style
      */
     private void initView() {
-//        bind.bnve.enableItemShiftingMode(true);
-//        bind.bnve.enableAnimation(false);
+//        navigation.enableItemShiftingMode(true);
+//        navigation.enableAnimation(true);
     }
 
 
@@ -119,6 +96,10 @@ public class TabAppioActivity extends AppioActivity {
         navigation.setupWithViewPager(viewPager);
     }
 
+
+    public void setOnTabchangedListener(IntegerListener onTabchangedListener) {
+        this.onTabchangedListener = onTabchangedListener;
+    }
 
     protected void addTab(TabFrame tabFrame){
         tabFrameList.add(tabFrame);
@@ -198,28 +179,20 @@ public class TabAppioActivity extends AppioActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Log.d(TAG, item.getItemId() + " item was selected-------------------");
                 updateToolbarText(item.getTitle());
+                if (onTabchangedListener != null)
+                    onTabchangedListener.onAction(item.getItemId());
                 return true;
             }
         });
 
 
     }
-
+/*
     private void paintFragments(){
         for (Fragment fragment:fragments){
             if (fragment instanceof BaseFragment){
                 BaseFragment baseFragment = (BaseFragment) fragment;
                 baseFragment.paintFrame();
-            }
-        }
-    }
-    /*
-    private void selectTab (MenuItem item) {
-//            selectFragment(item);
-        for (TabFrame tabFrame: tabFrameList) {
-            if (item.getItemId() == tabFrame.getId()){
-                selectTabFrame(tabFrame);
-                updateToolbarText(item.getTitle());
             }
         }
     }
@@ -240,36 +213,7 @@ public class TabAppioActivity extends AppioActivity {
     public void onBackPressed() {
         super.onBackPressed();
     }
-
 /*
-    private void selectFragment(MenuItem item) {
-        Fragment frag = null;
-        // init corresponding fragment
-        for (TabFrame tabFrame: tabFrameList) {
-            if (item.getItemId() == tabFrame.id){
-                frag = MenuFragment.newInstance(tabFrame.getLayout(), tabFrame.text, tabFrame.getBackgroundColor());
-            }
-        }
-
-        // update selected item
-        mSelectedItem = item.getItemId();
-
-        // uncheck the other items.
-        for (int i = 0; i< navigation.getMenu().size(); i++) {
-            MenuItem menuItem = navigation.getMenu().getItem(i);
-            menuItem.setChecked(menuItem.getItemId() == item.getItemId());
-        }
-
-        updateToolbarText(item.getTitle());
-
-        if (frag != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.container, frag, frag.getTag());
-            ft.commit();
-        }
-    }
-*/
-
     private synchronized void selectTabFrame(TabFrame tabFrame) {
         //Check if the TabFrame is painted
         ViewGroup frameContainer = tabContainers.get(tabFrame.getId());
@@ -291,7 +235,7 @@ public class TabAppioActivity extends AppioActivity {
         visibleContainer.setVisibility(View.VISIBLE);
     }
 
-
+*/
 
     /**
      * view pager adapter

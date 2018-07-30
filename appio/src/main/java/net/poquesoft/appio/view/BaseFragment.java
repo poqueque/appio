@@ -91,7 +91,8 @@ public class BaseFragment extends Fragment {
     }
 
     protected synchronized void clearFrame() {
-        mContainer.removeAllViews();
+        if (mContainer != null)
+            mContainer.removeAllViews();
     }
 
     protected void setSwipeListener(SimpleListener swipeListener) {

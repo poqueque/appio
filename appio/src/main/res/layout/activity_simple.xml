@@ -19,6 +19,21 @@
             android:layout_height="?android:attr/actionBarSize"
             app:theme="@style/AppTheme.Toolbar"
             android:background="@color/colorPrimaryDark"/>
+
+        <TextView
+            android:id="@+id/error_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/red"
+            android:padding="@dimen/component_margin_horizontal"
+            android:fontFamily="@font/raleway_black"
+            android:drawableLeft="@drawable/i_error"
+            android:drawableTint="@color/dark_grey"
+            android:drawablePadding="12dp"
+            android:layout_below="@id/toolbar"
+            android:visibility="gone"
+            android:text="Error message"/>
+
         <ProgressBar
             android:id="@+id/progress"
             style="?android:attr/progressBarStyleLarge"

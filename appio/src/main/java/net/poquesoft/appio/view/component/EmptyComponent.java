@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.Button;
 
 import net.poquesoft.appio.R;
-import net.poquesoft.appio.view.listeners.ActionListener;
+import net.poquesoft.appio.view.listeners.IntegerListener;
 
 /**
  * Standard Button component
@@ -14,7 +14,7 @@ public class EmptyComponent extends Component {
 
     String text = "";
     int clickAction = Component.NONE;
-    ActionListener actionListener;
+    IntegerListener actionListener;
     Button button;
 
     public EmptyComponent() {

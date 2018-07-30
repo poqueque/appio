@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import net.poquesoft.appio.R;
-import net.poquesoft.appio.view.listeners.ActionListener;
+import net.poquesoft.appio.view.listeners.IntegerListener;
 
 /**
  * Standard Text component
@@ -21,14 +21,14 @@ public class LoginComponent extends Component {
 
     private int loginAction = Component.NONE;
     private int forgotPassAction = Component.NONE;
-    private ActionListener actionListener;
+    private IntegerListener actionListener;
     private Button loginButton;
     private TextView forgotPassText;
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private Context context;
 
-    public LoginComponent(ActionListener actionListener, int loginActionId, int forgotPassActionId) {
+    public LoginComponent(IntegerListener actionListener, int loginActionId, int forgotPassActionId) {
         loginAction = loginActionId;
         forgotPassAction = forgotPassActionId;
         this.actionListener = actionListener;
