@@ -20,12 +20,14 @@ public class RecyclerViewComponent extends Component {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private int layout;
+    private int columns;
 
     ArrayList<Component> items = new ArrayList<>();
 
-    public RecyclerViewComponent(int layout) {
+    public RecyclerViewComponent(int layout, int columns) {
         super();
         this.layout = layout;
+        this.columns = columns;
 
     }
 
@@ -44,7 +46,7 @@ public class RecyclerViewComponent extends Component {
 //        recyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-        layoutManager = new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);
+        layoutManager = new StaggeredGridLayoutManager(columns,StaggeredGridLayoutManager.VERTICAL);
 
         recyclerView.setLayoutManager(layoutManager);
 

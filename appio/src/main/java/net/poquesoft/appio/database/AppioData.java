@@ -13,6 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import net.poquesoft.appio.authentication.Authentication;
 import net.poquesoft.appio.authentication.User;
+import net.poquesoft.appio.view.listeners.SimpleListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,8 +45,8 @@ public class AppioData {
      * Initializes user data, reading the profile and grabing all the workouts from database
      *
      */
-    public static void initUserData(){
-        getUserProfile();
+    public static void initUserData(SimpleListener simpleListener){
+        getUserProfile(simpleListener);
     }
 
 
@@ -83,16 +84,16 @@ public class AppioData {
      * Reads current user Profile
      *
      */
-    private static void getUserProfile() {
+    private static void getUserProfile(final SimpleListener simpleListener) {
         Log.d(TAG, "[DB] getUserProfile");
         if (!Authentication.isUserLogged()) {
-            notifyListeners();
+            simpleListener.onAction();
             return;
         }
         final String userKey = Authentication.getUid();
         if (userKey == null) {
             Log.d(TAG, "[DB] User email null: [" + Authentication.getUid() + " , " + Authentication.getEmail() + "]");
-            notifyListeners();
+            simpleListener.onAction();
         } else {
             mDatabase.child("users").child(userKey).addListenerForSingleValueEvent(
                     new ValueEventListener() {
@@ -104,14 +105,15 @@ public class AppioData {
                             User u = dataSnapshot.getValue(User.class);
                             //                        if (u != null && u.uid != null && u.uid.equals(Authentication.getUid()))
                             Authentication.setUser(u);
-                            notifyListeners();
+                            simpleListener.onAction();
+
                         }
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
                             Log.w(TAG, "[DB] getUser:onCancelled [" + databaseError.getCode() + "]", databaseError.toException());
                             Authentication.setUser(null);
-                            notifyListeners();
+                            simpleListener.onAction();
                         }
                     });
         }
@@ -160,6 +162,10 @@ public class AppioData {
     }
 
     public void synchronizeServerTimeDelay(final Context context) {
+        if (!Authentication.isUserLogged()) {
+            notifyListeners();
+            return;
+        }
 
         getUserRef().child("lastConnected").addListenerForSingleValueEvent(
                 new ValueEventListener() {

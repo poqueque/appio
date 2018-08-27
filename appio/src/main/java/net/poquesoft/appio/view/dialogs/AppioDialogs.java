@@ -5,10 +5,12 @@ import android.content.Context;
 import android.graphics.Color;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
+import net.poquesoft.appio.view.listeners.IntegerListener;
 import net.poquesoft.appio.view.listeners.SimpleListener;
+import net.poquesoft.appio.view.listeners.StringListener;
 import net.poquesoft.appio.view.listeners.YesNoListener;
+import net.poquesoft.libs.SweetAlert.SweetAlertDialog;
 
 
 /**
@@ -32,7 +34,6 @@ public class AppioDialogs {
      * @param listener
      */
 	public static void successMessage(final Context context, String message, final SimpleListener listener) {
-
         new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
                 .setTitleText(message)
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -105,10 +106,59 @@ public class AppioDialogs {
                 .show();
     }
 
+    /**
+     * Ask for data to be entered
+     * @param context Context
+     * @param message Message to display
+     * @param listener
+     */
+    public static void ask(final Context context, String message, final StringListener listener) {
 
-    public static void errorMessage(final Context context, String message) {
+        new SweetAlertDialog(context, SweetAlertDialog.ASK_TYPE)
+                .setTitleText(message)
+                .setConfirmText(context.getString(android.R.string.ok))
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        if (listener != null) listener.onAction(sweetAlertDialog.getEditText());
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                })
+                .show();
+    }
+
+
+    /**
+     * Ask for rating to be entered
+     * @param context Context
+     * @param message Message to display
+     * @param listener
+     */
+    public static void rate(final Context context, String message, final IntegerListener listener) {
+
+        new SweetAlertDialog(context, SweetAlertDialog.RATING_TYPE)
+                .setTitleText(message)
+                .setConfirmText(context.getString(android.R.string.ok))
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        if (listener != null) listener.onAction(sweetAlertDialog.getStars());
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                })
+                .show();
+    }
+
+    public static void errorMessage(final Context context, String message, final SimpleListener listener) {
         new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
                 .setTitleText(message)
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        if (listener != null) listener.onAction();
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                })
                 .show();
     }
 

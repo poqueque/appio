@@ -36,6 +36,10 @@ public class AppioPresenter implements BasePresenter, PresenterAsyncTask.OnCompl
         startNextTask();
     }
 
+    protected void cancelTasks(){
+        enqueuedTasks.clear();
+    }
+
     private void startNextTask() {
         if (enqueuedTasks.size() > 0){
             PresenterAsyncTask task = enqueuedTasks.get(0);

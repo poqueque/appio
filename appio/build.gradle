@@ -44,6 +44,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
     implementation 'com.google.firebase:firebase-database:16.0.1'
     implementation 'com.google.firebase:firebase-core:16.0.1'
+
         //BottomNavigationEx
     implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
     //MaterialDrawer
@@ -65,9 +66,12 @@ dependencies {
     }
 
     //Sweet Alert Dialog
-    //https://jitpack.io/p/poqueque/sweet-alert-dialog/v1.4.3
+    //https://jitpack.io/p/poqueque/sweet-alert-dialog/v1.4.4
     //TODO: Use final version
-    implementation 'com.github.poqueque:sweet-alert-dialog:develop-SNAPSHOT'
+    implementation 'com.github.poqueque:sweet-alert-dialog:ce6d2afc2e'
+
+    //RoundCornerProgressBar
+    implementation 'com.akexorcist:RoundCornerProgressBar:2.0.3'
 
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'

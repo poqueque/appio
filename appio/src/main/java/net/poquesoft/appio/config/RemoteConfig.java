@@ -16,7 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Headers;
@@ -47,8 +46,6 @@ public class RemoteConfig {
         this.contentToReturn = "";
 
         OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
-        builder.cache(
-                new Cache(context.getCacheDir(), CACHE_SIZE_BYTES));
         client = builder.build();
     }
 

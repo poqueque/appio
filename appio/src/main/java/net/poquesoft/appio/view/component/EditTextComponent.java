@@ -1,5 +1,6 @@
 package net.poquesoft.appio.view.component;
 
+import android.text.Html;
 import android.text.InputType;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -54,7 +55,7 @@ public class EditTextComponent extends Component {
         if (description == null){
             descriptionText.setVisibility(View.GONE);
         } else {
-            descriptionText.setText(description);
+            descriptionText.setText(Html.fromHtml(description));
             descriptionText.setVisibility(View.VISIBLE);
         }
         if (initialText != null){

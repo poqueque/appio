@@ -1,18 +1,21 @@
 package net.poquesoft.appio.authentication;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 
 import net.poquesoft.appio.database.AppioData;
+import net.poquesoft.appio.view.listeners.SimpleListener;
 import net.poquesoft.appio.view.listeners.SuccessErrorListener;
 
 /**
@@ -32,9 +35,10 @@ public class Authentication {
     public static final String ERROR_INVALID_EMAIL = "ERROR_INVALID_EMAIL";
     public static final String ERROR_USER_NOT_FOUND = "ERROR_USER_NOT_FOUND";
     private static User userProfile;
-
+    private static Context firebaseContext;
 
     public static void initFirebase(Context context) {
+        firebaseContext = context;
         FirebaseApp.initializeApp(context);
         init();
     }
@@ -112,8 +116,12 @@ public class Authentication {
                         // signed in user can be handled in the listener.
                         if (task.isSuccessful()) {
                             Log.d(TAG, "[PROFILE] Authentication succeed.");
-                            AppioData.initUserData();
-                            successErrorListener.onSuccess();
+                            AppioData.initUserData(new SimpleListener() {
+                                @Override
+                                public void onAction() {
+                                    successErrorListener.onSuccess();
+                                }
+                            });
                         } else {
                             Log.d(TAG, "[PROFILE] Authentication failed.");
                             if (task.getException() instanceof FirebaseAuthException){
@@ -158,8 +166,12 @@ public class Authentication {
                         // signed in user can be handled in the listener.
                         if (task.isSuccessful()) {
                             Log.d(TAG,"[PROFILE] Succesful login");
-                            AppioData.initUserData();
-                            successErrorListener.onSuccess();
+                            AppioData.initUserData(new SimpleListener() {
+                                @Override
+                                public void onAction() {
+                                    successErrorListener.onSuccess();
+                                }
+                            });
                         } else {
                             Log.w(TAG, "[PROFILE] signInWithEmail", task.getException());
                             if (task.getException() instanceof FirebaseAuthException) {
@@ -179,6 +191,97 @@ public class Authentication {
                 });
     }
 
+
+    /**
+     * Authenticate with Firebase Using Email Link in Android
+     * @see {<a href="https://firebase.google.com/docs/auth/android/email-link-auth"></a>}
+     *
+     * @param successErrorListener Listener to receive callbacks
+     * @param email Email of the new user
+     */
+    public static void loginLink(final SuccessErrorListener successErrorListener, final String email, final String returnUrl, final String packageName){
+        Log.d(TAG, "[PROFILE] Login with Email link");
+
+        ActionCodeSettings actionCodeSettings =
+                ActionCodeSettings.newBuilder()
+                        // URL you want to redirect back to. The domain (www.example.com) for this
+                        // URL must be whitelisted in the Firebase Console.
+                        .setUrl(returnUrl)
+                        // This must be true
+                        .setHandleCodeInApp(true)
+                        .setAndroidPackageName(
+                                packageName,
+                                true, /* installIfNotAvailable */
+                                "1"    /* minimumVersion */)
+                        .build();
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        auth.sendSignInLinkToEmail(email, actionCodeSettings)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "Email sent.");
+                            if (firebaseContext != null){
+                                SharedPreferences sharedPref =
+                                        firebaseContext.getSharedPreferences("appio", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPref.edit();
+                                editor.putString("emailAuthentication", email);
+                                editor.apply();
+                            }
+                            successErrorListener.onSuccess();
+                        } else {
+                            if (task.getException() != null)
+                                successErrorListener.onError(task.getException().getMessage());
+                            else
+                                successErrorListener.onError("Unknown error");
+                        }
+                    }
+                });
+    }
+
+
+    public static void verifyLink(final SuccessErrorListener successErrorListener, final String emailLink){
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String email = null;
+        if (firebaseContext != null) {
+            SharedPreferences sharedPref =
+                    firebaseContext.getSharedPreferences("appio", Context.MODE_PRIVATE);
+            email = sharedPref.getString("emailAuthentication",null);
+        }
+        // Confirm the link is a sign-in with email link.
+        if (auth.isSignInWithEmailLink(emailLink)) {
+            auth.signInWithEmailLink(email, emailLink)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "Successfully signed in with email link!");
+                                AuthResult result = task.getResult();
+
+                                AppioData.initUserData(new SimpleListener() {
+                                    @Override
+                                    public void onAction() {
+                                        successErrorListener.onSuccess();
+                                    }
+                                });
+                                // You can access the new user via result.getUser()
+                                // Additional user info profile *not* available via:
+                                // result.getAdditionalUserInfo().getProfile() == null
+                                // You can check if the user is new or existing:
+                                // result.getAdditionalUserInfo().isNewUser()
+                            } else {
+                                Log.e(TAG, "Error signing in with email link: "
+                                        + task.getException().getMessage());
+
+                                successErrorListener.onError(task.getException().getMessage());
+                            }
+                        }
+                    });
+        }
+    }
+
     /**
      * Gets current user
      *
@@ -186,7 +289,7 @@ public class Authentication {
      */
     public static FirebaseUser getUser() {
         if (mAuth == null) mAuth = FirebaseAuth.getInstance();
-        if (mUser == null) mAuth.getCurrentUser();
+        if (mUser == null) mUser = mAuth.getCurrentUser();
         return mUser;
     }
 
@@ -197,7 +300,7 @@ public class Authentication {
      */
     public static String getUid() {
         if (mAuth == null) mAuth = FirebaseAuth.getInstance();
-        if (mUser == null) mAuth.getCurrentUser();
+        if (mUser == null) mUser = mAuth.getCurrentUser();
         if (mUser == null) return null;
         return mUser.getUid();
     }
@@ -206,12 +309,12 @@ public class Authentication {
      * Performs logout
      *
      */
-    /*
+
     public static void logout() {
         userProfile = null;
         FirebaseAuth.getInstance().signOut();
     }
-*/
+
     /**
      * Gets current user email
      *
@@ -283,6 +386,7 @@ public class Authentication {
      * @return User profile
      */
     public static User getUserProfile() {
+
         if (userProfile != null) {
             userProfile.email = Authentication.getEmail();
             userProfile.uid = Authentication.getUid();

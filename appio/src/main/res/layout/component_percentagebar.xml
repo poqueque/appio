@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/component_margin_horizontal"
+    android:layout_marginRight="@dimen/component_margin_horizontal"
+    android:layout_marginBottom="@dimen/component_margin_vertical"
+    android:layout_marginTop="@dimen/component_margin_vertical">
+
+
+    <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+        android:id="@+id/percentageBar"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        app:rcProgressColor="@color/primary"
+        app:rcBackgroundColor="@color/light_grey"
+        app:rcProgress="50"
+        app:rcMax="100"
+        app:rcBackgroundPadding="2dp"
+        app:rcRadius="10dp"/>
+
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:layout_gravity="center"/>
+</FrameLayout>

@@ -1,6 +1,8 @@
 package net.poquesoft.appio.view;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -9,8 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.materialdrawer.Drawer;
@@ -25,7 +30,12 @@ import net.poquesoft.appio.presenter.AppioPresenter;
 import net.poquesoft.appio.view.dialogs.AppioDialogs;
 import net.poquesoft.appio.view.drawer.DrawerConfig;
 import net.poquesoft.appio.view.drawer.DrawerItem;
+import net.poquesoft.appio.view.listeners.IntegerListener;
 import net.poquesoft.appio.view.listeners.SimpleListener;
+import net.poquesoft.appio.view.listeners.StringListener;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class AppioActivity extends AppCompatActivity implements BaseView<AppioPresenter>, Drawer.OnDrawerListener {
 
@@ -163,10 +173,6 @@ public class AppioActivity extends AppCompatActivity implements BaseView<AppioPr
 
     }
 
-    public void showError(String message){
-        AppioDialogs.errorMessage(this, message);
-    }
-
     public void showErrorFrame(String message){
         TextView errorFrame = findViewById(R.id.error_frame);
         if (errorFrame != null) {
@@ -182,14 +188,41 @@ public class AppioActivity extends AppCompatActivity implements BaseView<AppioPr
         }
     }
 
-    public void showSuccess(String message){
-        AppioDialogs.successMessage(this, message, null);
+    public void showSuccess(final String message){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AppioDialogs.successMessage(AppioActivity.this, message, null);
+            }
+        });
     }
 
-    public void showSuccess(String message, SimpleListener listener){
-        AppioDialogs.successMessage(this, message, listener);
+    public void showSuccess(final String message, final SimpleListener listener){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AppioDialogs.successMessage(AppioActivity.this, message, listener);
+            }
+        });
     }
 
+    public void showError(final String message){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AppioDialogs.errorMessage(AppioActivity.this, message, (SimpleListener) null);
+            }
+        });
+    }
+
+    public void showError(final String message, final SimpleListener listener){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AppioDialogs.errorMessage(AppioActivity.this, message, listener);
+            }
+        });
+    }
 
     public void showNormal(String message){
         AppioDialogs.normalMessage(this, message, null);
@@ -202,7 +235,93 @@ public class AppioActivity extends AppCompatActivity implements BaseView<AppioPr
     public void confirm(String message, SimpleListener listenerAccept){
         AppioDialogs.confirm(this, message, listenerAccept);
     }
+
     public void confirm(String message, SimpleListener listenerAccept, SimpleListener listenerCancel){
         AppioDialogs.confirm(this, message, listenerAccept, listenerCancel);
     }
+
+    public void ask(String message, StringListener listener){
+        AppioDialogs.ask(this, message, listener);
+    }
+
+    public void rate(String message, IntegerListener listener){
+        AppioDialogs.rate(this, message, listener);
+    }
+
+
+    public void hideKeyboard() {
+        // Check if no view has focus:
+        View view = getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
+    public void showWarning(String content, boolean doNotShowCheck) {
+        final String key = "doNotShow_"+getClass().getSimpleName()+"_"+md5(content);
+        if (!retrieveBoolean(key)) {
+            MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
+                    .title(R.string.warning)
+                    .content(content)
+                    .positiveText(R.string.ok);
+
+            if (doNotShowCheck){
+                    builder.onAny(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(MaterialDialog dialog, DialogAction which) {
+                            if (dialog.isPromptCheckBoxChecked()) {
+                                persist(key, true);
+                            }
+                        }
+                    })
+                    .checkBoxPromptRes(R.string.dont_ask_again, false, null);
+            }
+            builder.show();
+        }
+    }
+
+    public String md5(String s) {
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            digest.update(s.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            // Create Hex String
+            StringBuffer hexString = new StringBuffer();
+            for (int i=0; i<messageDigest.length; i++)
+                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+            return hexString.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    private void persist(String key, boolean b) {
+        SharedPreferences sharedPref = getSharedPreferences("appio", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(key, b);
+        editor.apply();
+    }
+
+    private boolean retrieveBoolean(String key) {
+        SharedPreferences sharedPref = getSharedPreferences("appio", Context.MODE_PRIVATE);
+        return sharedPref.getBoolean(key,false);
+    }
+
+    private void persist(String key, String s) {
+        SharedPreferences sharedPref = getSharedPreferences("appio", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(key, s);
+        editor.apply();
+    }
+
+    private String retrieveString(String key) {
+        SharedPreferences sharedPref = getSharedPreferences("appio", Context.MODE_PRIVATE);
+        return sharedPref.getString(key,null);
+    }
+
 }
