@@ -161,6 +161,15 @@ public class AppioData {
         return serverTimestamp;
     }
 
+    public void setFCMToken(String token){
+        if (!Authentication.isUserLogged()) {
+            notifyListeners();
+            return;
+        }
+
+        getUserRef().child("fcmtoken").setValue(token);
+    }
+
     public void synchronizeServerTimeDelay(final Context context) {
         if (!Authentication.isUserLogged()) {
             notifyListeners();

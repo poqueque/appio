@@ -10,6 +10,10 @@
         android:theme="@style/AppTheme">
         <activity android:name=".view.AppioActivity">
         </activity>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="APPIO_CHANNEL_ID" />
     </application>
 
 </manifest>
