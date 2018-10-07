@@ -23,6 +23,10 @@ public class ButtonComponent extends Component {
         text = s;
     }
 
+    public ButtonComponent() {
+        text = "Button";
+    }
+
     @Override
     public int getLayout() {
         return R.layout.component_button;

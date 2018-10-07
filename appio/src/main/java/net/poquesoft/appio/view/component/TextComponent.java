@@ -22,6 +22,10 @@ public class TextComponent extends Component {
     private int size = NORMAL;
     private int style = NORMAL;
 
+    public TextComponent() {
+        text = "Text";
+    }
+
     public TextComponent(String s) {
         text = s;
     }
