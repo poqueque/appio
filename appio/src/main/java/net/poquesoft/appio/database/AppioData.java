@@ -150,6 +150,9 @@ public class AppioData {
         return mDatabase.child("users").child(userKey);
     }
 
+    public static DatabaseReference getUserRef(String userKey){
+        return mDatabase.child("users").child(userKey);
+    }
 
     public long getServerTime(final Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences(
@@ -159,6 +162,15 @@ public class AppioData {
         long serverTimestamp = System.currentTimeMillis()-serverDelay;
         Log.d(TAG,"[DELAY] Server Timestamp:"+serverTimestamp);
         return serverTimestamp;
+    }
+
+    public void setFCMToken(String token){
+        if (!Authentication.isUserLogged()) {
+            notifyListeners();
+            return;
+        }
+
+        getUserRef().child("fcmtoken").setValue(token);
     }
 
     public void synchronizeServerTimeDelay(final Context context) {

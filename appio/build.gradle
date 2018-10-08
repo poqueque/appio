@@ -37,18 +37,23 @@ dependencies {
     implementation "com.android.support:support-annotations:${supportLibVersion}"
     implementation "com.android.support:design:${supportLibVersion}"
     implementation "com.android.support:support-vector-drawable:${supportLibVersion}"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
     //Firebase
-    implementation 'com.google.firebase:firebase-auth:16.0.2'
-    implementation 'com.google.android.gms:play-services-auth:15.0.1'
-    implementation 'com.google.firebase:firebase-database:16.0.1'
-    implementation 'com.google.firebase:firebase-core:16.0.1'
+    api 'com.google.firebase:firebase-auth:16.0.4'
+    api 'com.google.android.gms:play-services-auth:16.0.1'
+    api 'com.google.firebase:firebase-database:16.0.3'
+    api 'com.google.firebase:firebase-core:16.0.4'
+    api 'com.google.firebase:firebase-messaging:17.3.3'
+    api 'com.google.firebase:firebase-invites:16.0.4'
+    api 'com.google.firebase:firebase-config:16.0.1'
+
+    implementation 'com.google.android.gms:play-services-analytics:16.0.4'
 
         //BottomNavigationEx
     implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
     //MaterialDrawer
-    implementation("com.mikepenz:materialdrawer:6.0.8@aar") {
+    api ("com.mikepenz:materialdrawer:6.0.8@aar") {
         transitive = true
     }
     //Icons for MaterialDrawer
@@ -85,8 +90,6 @@ dependencies {
 
     //Joda Time
     implementation 'net.danlew:android.joda:2.9.9.3'
-
-    implementation 'com.google.android.gms:play-services-analytics:16.0.1'
 
     //Test Libraries
     testImplementation 'junit:junit:4.12'
