@@ -48,6 +48,8 @@ dependencies {
     api 'com.google.firebase:firebase-invites:16.0.4'
     api 'com.google.firebase:firebase-config:16.0.1'
 
+    implementation 'com.google.android.gms:play-services-analytics:16.0.4'
+
         //BottomNavigationEx
     implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
     //MaterialDrawer
@@ -88,8 +90,6 @@ dependencies {
 
     //Joda Time
     implementation 'net.danlew:android.joda:2.9.9.3'
-
-    implementation 'com.google.android.gms:play-services-analytics:16.0.4'
 
     //Test Libraries
     testImplementation 'junit:junit:4.12'

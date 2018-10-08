@@ -77,12 +77,12 @@ public class BaseFragment extends Fragment {
     protected synchronized void paintFrame() {
 
         mContainer.removeAllViews();
-
-        for (Component c: tabFrame.componentList){
-            View child = c.getView(mContext, mContainer);
-            mContainer.addView(child);
+        if (tabFrame != null) {
+            for (Component c : tabFrame.componentList) {
+                View child = c.getView(mContext, mContainer);
+                mContainer.addView(child);
+            }
         }
-
     }
 
     protected synchronized void addComponent(Component component) {

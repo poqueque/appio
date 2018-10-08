@@ -28,8 +28,7 @@ public class Notificator {
     }
 
     public void showNotification(Context c, int notificationId, int icon, String textTitle, String textContent, PendingIntent pendingIntent){
-        if (!init)
-            throw new RuntimeException("Please call init() before createNotification()");
+        if (!init) init(c);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(c, CHANNEL_ID)
                 .setSmallIcon(icon)
@@ -50,7 +49,6 @@ public class Notificator {
         notificationManager.notify(notificationId, mBuilder.build());
 
     }
-
 
     private void init(Context c) {
         // Create the NotificationChannel, but only on API 26+ because

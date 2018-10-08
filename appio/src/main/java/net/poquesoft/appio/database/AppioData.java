@@ -150,6 +150,9 @@ public class AppioData {
         return mDatabase.child("users").child(userKey);
     }
 
+    public static DatabaseReference getUserRef(String userKey){
+        return mDatabase.child("users").child(userKey);
+    }
 
     public long getServerTime(final Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences(

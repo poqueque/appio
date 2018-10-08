@@ -5,9 +5,6 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.Map;
 
 public abstract class AppioFCMService extends FirebaseMessagingService {
@@ -53,21 +50,18 @@ public abstract class AppioFCMService extends FirebaseMessagingService {
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
         Map<String,String> extras = remoteMessage.getData();
-        String response = extras.get("Notice");
 
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(response);
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        String message = extras.get("message");
+        String type = extras.get("type");
+        String exchangeid = extras.get("exchangeid");
+
+        if (extras != null) {
+            processMessage(from, data, notificationBody, extras);
         }
-        Log.i(TAG, "[GCM] Received: " + response);
-        processMessage(from, data, notificationBody, jsonObject);
     }
 
 
     protected abstract void sendRegistrationToServer(String token);
-    protected abstract void processMessage(String from, Map<String, String> data, String notificationBody, JSONObject jsonObject);
+    protected abstract void processMessage(String from, Map<String, String> data, String notificationBody, Map<String,String> extras);
 
 }
