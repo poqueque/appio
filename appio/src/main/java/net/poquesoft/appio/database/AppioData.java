@@ -146,6 +146,7 @@ public class AppioData {
 
     public static DatabaseReference getUserRef(){
         User u = Authentication.getUserProfile();
+        if (u==null) return null;
         String userKey = u.uid;
         return mDatabase.child("users").child(userKey);
     }
@@ -170,7 +171,9 @@ public class AppioData {
             return;
         }
 
-        getUserRef().child("fcmtoken").setValue(token);
+        DatabaseReference userRef = getUserRef();
+        if (userRef == null) return;
+        userRef.child("fcmtoken").setValue(token);
     }
 
     public void synchronizeServerTimeDelay(final Context context) {
@@ -179,7 +182,9 @@ public class AppioData {
             return;
         }
 
-        getUserRef().child("lastConnected").addListenerForSingleValueEvent(
+        DatabaseReference userRef = getUserRef();
+        if (userRef == null) return;
+        userRef.child("lastConnected").addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
@@ -202,7 +207,7 @@ public class AppioData {
                 }
         );
 
-        getUserRef().child("lastConnected").setValue(ServerValue.TIMESTAMP);
+        userRef.child("lastConnected").setValue(ServerValue.TIMESTAMP);
 
     }
 }
