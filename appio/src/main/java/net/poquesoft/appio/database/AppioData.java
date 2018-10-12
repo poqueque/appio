@@ -2,6 +2,8 @@ package net.poquesoft.appio.database;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -167,7 +169,6 @@ public class AppioData {
 
     public void setFCMToken(String token){
         if (!Authentication.isUserLogged()) {
-            notifyListeners();
             return;
         }
 
@@ -176,9 +177,9 @@ public class AppioData {
         userRef.child("fcmtoken").setValue(token);
     }
 
-    public void synchronizeServerTimeDelay(final Context context) {
+    public void synchronizeServerTimeDelay(final Context context, final DataListener listener) {
         if (!Authentication.isUserLogged()) {
-            notifyListeners();
+            listener.onDataChange();
             return;
         }
 
@@ -196,18 +197,24 @@ public class AppioData {
                         editor.putLong("serverDelay", delay);
                         editor.commit();
                         Log.d(TAG,"[DELAY] saveServerDelay:"+delay);
-                        notifyListeners();
+                        listener.onDataChange();
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         Log.d(TAG,"[DELAY] databaseError: "+databaseError);
-                        notifyListeners();
+                        listener.onDataChange();
                     }
                 }
         );
 
         userRef.child("lastConnected").setValue(ServerValue.TIMESTAMP);
-
+        try {
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            String version = pInfo.versionName;
+            userRef.child("version").setValue(version);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -86,8 +86,10 @@ public class BaseFragment extends Fragment {
     }
 
     protected synchronized void addComponent(Component component) {
-        View child = component.getView(mContext, mContainer);
-        mContainer.addView(child);
+        if (mContext != null && mContainer != null) { //Crashlytics #6
+            View child = component.getView(mContext, mContainer);
+            mContainer.addView(child);
+        }
     }
 
     protected synchronized void clearFrame() {
