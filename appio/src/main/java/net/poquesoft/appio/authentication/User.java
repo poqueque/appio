@@ -21,7 +21,7 @@ public class User implements Comparable<User>, Serializable {
     public String name;
     public String gender;
     public String address;
-    public String fcmtoken;
+    public String fcmtoken; //removed on version 1.007
     public boolean user_admin = false;
     public boolean admin = false;
     public boolean mail_validated = false;

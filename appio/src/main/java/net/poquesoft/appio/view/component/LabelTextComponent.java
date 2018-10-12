@@ -20,12 +20,20 @@ public class LabelTextComponent extends Component {
 
     private String label = "";
     private String text = "";
+    private String subtext = "";
     private int size = NORMAL;
     private int style = NORMAL;
 
-    public LabelTextComponent(String label, String s) {
+    public LabelTextComponent() {
+    }
+
+    public LabelTextComponent(String label) {
         this.label = label;
-        text = s;
+    }
+
+    public LabelTextComponent(String label, String text) {
+        this.label = label;
+        this.text = text;
     }
 
     @Override
@@ -41,6 +49,7 @@ public class LabelTextComponent extends Component {
         if (style == BOLD)
             labelTextView.setTypeface(labelTextView.getTypeface(), Typeface.BOLD);
         labelTextView.setText(Html.fromHtml(label), TextView.BufferType.SPANNABLE);
+
         TextView textView = v.findViewById(R.id.text);
         if (size == EXTRA_SMALL)
             textView.setTextSize(R.dimen.text_extra_small_size);
@@ -48,6 +57,29 @@ public class LabelTextComponent extends Component {
             textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
         if (text != null)
             textView.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
+
+        TextView subtextView = v.findViewById(R.id.subtext);
+        if (subtext != null && !"".equals(subtext)) {
+            subtextView.setText(Html.fromHtml(subtext), TextView.BufferType.SPANNABLE);
+            subtextView.setVisibility(View.VISIBLE);
+        } else {
+            subtextView.setVisibility(View.GONE);
+        }
+    }
+
+    public LabelTextComponent setLabel(String label) {
+        this.label = label;
+        return this;
+    }
+
+    public LabelTextComponent setText(String text) {
+        this.text = text;
+        return this;
+    }
+
+    public LabelTextComponent setSubtext(String text) {
+        this.subtext = text;
+        return this;
     }
 
     public LabelTextComponent setSize(int size) {

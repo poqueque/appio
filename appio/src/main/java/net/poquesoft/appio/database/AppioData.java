@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -15,7 +17,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import net.poquesoft.appio.authentication.Authentication;
 import net.poquesoft.appio.authentication.User;
+import net.poquesoft.appio.utils.TimeUtils;
 import net.poquesoft.appio.view.listeners.SimpleListener;
+import net.poquesoft.appio.view.listeners.StringListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -153,8 +157,15 @@ public class AppioData {
         return mDatabase.child("users").child(userKey);
     }
 
-    public static DatabaseReference getUserRef(String userKey){
-        return mDatabase.child("users").child(userKey);
+    public static DatabaseReference getDirectoryRef(){
+        User u = Authentication.getUserProfile();
+        if (u==null) return null;
+        String userKey = u.uid;
+        return mDatabase.child("directory").child(userKey);
+    }
+
+    public static DatabaseReference getDirectoryRef(String userKey){
+        return mDatabase.child("directory").child(userKey);
     }
 
     public long getServerTime(final Context context) {
@@ -172,7 +183,7 @@ public class AppioData {
             return;
         }
 
-        DatabaseReference userRef = getUserRef();
+        DatabaseReference userRef = getDirectoryRef();
         if (userRef == null) return;
         userRef.child("fcmtoken").setValue(token);
     }
@@ -183,9 +194,24 @@ public class AppioData {
             return;
         }
 
-        DatabaseReference userRef = getUserRef();
-        if (userRef == null) return;
-        userRef.child("lastConnected").addListenerForSingleValueEvent(
+        DatabaseReference directoryRef = getDirectoryRef();
+        directoryRef.child("lastConnected").setValue(ServerValue.TIMESTAMP, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                if (databaseError != null)
+                    Log.d(TAG,"Database error: "+databaseError.getMessage());
+            }
+        });
+        try {
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            String version = pInfo.versionName;
+            directoryRef.child("version").setValue(version);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (directoryRef == null) return;
+        directoryRef.child("lastConnected").addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
@@ -207,14 +233,32 @@ public class AppioData {
                     }
                 }
         );
+    }
 
-        userRef.child("lastConnected").setValue(ServerValue.TIMESTAMP);
-        try {
-            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            String version = pInfo.versionName;
-            userRef.child("version").setValue(version);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+    public void getUserConnectedTimeHumanReadable(final Context c, String otherUserId, final StringListener stringListener) {
+        DatabaseReference directoryRef = getDirectoryRef(otherUserId);
+
+        if (directoryRef == null) stringListener.onAction(null);
+        directoryRef.child("lastConnected").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        Long timestampServer = (Long) snapshot.getValue();
+                        if (timestampServer == null){
+                            stringListener.onAction(null);
+                        } else {
+                            long delay = getServerTime(c)-timestampServer;
+                            String userConnected = TimeUtils.getElapsedTimeHumanReadable(delay);
+                            stringListener.onAction(userConnected);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.d(TAG,"[DELAY] databaseError: "+databaseError);
+                        stringListener.onAction(null);
+                    }
+                }
+        );
     }
 }

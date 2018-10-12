@@ -7,27 +7,53 @@
     android:layout_marginRight="@dimen/component_margin_horizontal"
     android:layout_marginBottom="@dimen/component_margin_vertical"
     android:layout_marginTop="@dimen/component_margin_vertical"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
-
-    <TextView
-        android:id="@+id/label"
-        android:text="Label: "
-        android:layout_width="0dp"
-        android:layout_weight="1"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_small_size"
-        android:fontFamily="@font/raleway_black"
-        android:textColor="@color/black"/>
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/label"
+            android:text="Label: "
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_small_size"
+            android:fontFamily="@font/raleway_black"
+            android:textColor="@color/black"/>
 
-    <TextView
-        android:id="@+id/text"
-        android:text="Título"
-        android:layout_width="0dp"
-        android:layout_weight="2"
+        <TextView
+            android:id="@+id/text"
+            android:text="Título"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_small_size"
+            android:fontFamily="@font/raleway_light"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_small_size"
-        android:fontFamily="@font/raleway_light"
-        android:textColor="@color/black"/>
+        android:orientation="horizontal">
+        <View
+            android:id="@+id/label22"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="0dp"/>
 
+        <TextView
+            android:id="@+id/subtext"
+            android:text="Subtitulo"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:textSize="@dimen/text_extra_small_size"
+            android:fontFamily="@font/raleway_light"
+            android:textColor="@color/black"/>
+    </LinearLayout>
 </LinearLayout>

@@ -161,14 +161,15 @@ public class TimeUtils {
      * Devuelve "Hace X minutos", "Hace X horas", etc... para mensajes. En castellano.
      */
 
-    public static String getElapsedTimeHumanReadable(long when) {
-        long now = System.currentTimeMillis();
+    public static String getElapsedTimeHumanReadable(long delay) {
         //Comprobar si when viene sin millis
 //        if (now/when > 100) when *=1000;
 
-        if (now < when) {
+        if (delay < 0) {
             //A futuro
-            long diffInSeconds = (when - now)/1000;
+            return "ahora";
+            /*
+            long diffInSeconds = (-delay)/1000;
             if (diffInSeconds < 60) return "ahora";
 
             long diffInMinutes = (diffInSeconds)/60;
@@ -190,9 +191,10 @@ public class TimeUtils {
             long diffInYears = (diffInMonths)/12;
             if (diffInYears == 1) return "en 1 año";
             return "en "+diffInYears+" años";
+            */
         }
 
-        long diffInSeconds = (now - when)/1000;
+        long diffInSeconds = (delay)/1000;
         if (diffInSeconds < 60) return "ahora";
 
         long diffInMinutes = (diffInSeconds)/60;
