@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("net.poquesoft.appio", appContext.getPackageName());
+        assertEquals("net.poquesoft.appio.test", appContext.getPackageName());
     }
 }

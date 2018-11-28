@@ -5,12 +5,10 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import net.poquesoft.appio.config.RemoteConfig;
-import net.poquesoft.appio.view.listeners.SuccessErrorListener;
+import net.poquesoft.appio.view.listeners.StringListener;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.io.IOException;
 
 import static junit.framework.Assert.assertTrue;
 
@@ -22,33 +20,23 @@ public class RemoteConfigTest {
         final Context context = InstrumentationRegistry.getContext();
         final Object syncObject = new Object();
 
-        RemoteConfig.getInstance(context).getConfig("collections.json",
+        RemoteConfig remoteConfig = new RemoteConfig(context,"collections.json",
                 "http://titan.poquesoft.net/r/c/collections.json",
-                new SuccessErrorListener() {
+                new StringListener() {
                     @Override
-                    public void onSuccess() {
-                        String s = null;
-                        try {
-                            s = RemoteConfig.getInstance(context).getLocalFile("collection.json");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        assertTrue(s.contains("ID_382"));
-                        synchronized (syncObject){
-                            syncObject.notify();
-                        }
-                    }
-
-                    @Override
-                    public void onError(String error) {
-                        assertTrue(false);
+                    public void onAction(String string) {
+                        assertTrue(string.contains("futbolpanini2018"));
                         synchronized (syncObject){
                             syncObject.notify();
                         }
                     }
                 });
+        remoteConfig.getRemoteConfig();
         synchronized (syncObject){
             syncObject.wait();
         }
+        //Read local file
+        String localFile = remoteConfig.getLocalFile();
+        assertTrue(localFile.contains("futbolpanini2018"));
     }
 }

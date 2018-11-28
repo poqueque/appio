@@ -55,7 +55,7 @@ public class RemoteConfig {
         getRemoteConfig(localLastModified);
     }
 
-    public void getRemoteConfig(final long newerThan) {
+    private void getRemoteConfig(final long newerThan) {
         if (newerThan <= 0) {
             getRemoteConfig();
             return;
@@ -147,7 +147,7 @@ public class RemoteConfig {
         });
     }
 
-    public long getLocalFileTimestamp() {
+    private long getLocalFileTimestamp() {
         File file = new File(context.getFilesDir(), localFile);
         return file.lastModified();
     }
